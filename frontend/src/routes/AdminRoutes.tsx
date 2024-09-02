@@ -5,6 +5,7 @@ import FullLayout from "../layout/FullLayout";
 const MainPages = Loadable(lazy(() => import("../pages/authentication/LoginStudent")));
 const Homepages = Loadable(lazy(() => import("../pages/homepage")));
 const Student = Loadable(lazy(() => import("../pages/student")));
+const Personal = Loadable(lazy(() => import("../pages/personal")));
 const StudentCreate = Loadable(lazy(() => import("../pages/student/create")));
 const StudentEdit = Loadable(lazy(() => import("../pages/student/edit")));
 const AdminRoutes = (isLoggedIn : boolean): RouteObject => {
@@ -30,6 +31,15 @@ const AdminRoutes = (isLoggedIn : boolean): RouteObject => {
           {
             path: "/student/edit/:id",
             element: <StudentEdit />,
+          },
+        ],
+      },
+      {
+        path: "/personal",
+        children: [
+          {
+            path: "/personal",
+            element: <Personal />,
           },
         ],
       },
