@@ -5,6 +5,7 @@ import (
 
 	"example.com/dormitory/config"
 	"example.com/dormitory/controller/genders"
+	"example.com/dormitory/controller/personal"
 	"example.com/dormitory/controller/student"
 	"example.com/dormitory/middlewares"
 	"github.com/gin-gonic/gin"
@@ -30,6 +31,11 @@ func main() {
 		router.GET("/list-student", student.ListStudent)
 		router.GET("/get-student/:id", student.GetStudent)
 		router.DELETE("/delete-student/:id", student.DeleteStudent)
+		router.POST("/create-personal", personal.CreatePersonal)
+		router.GET("/list-personal", personal.ListPersonal)
+		router.GET("/get-personal/:id", personal.GetPersonal)
+		router.PUT("/update-personal/:id", personal.UpdatePersonal)
+
 	}
 	r.GET("/genders", genders.GetAll)
 	r.GET("/", func(c *gin.Context) {

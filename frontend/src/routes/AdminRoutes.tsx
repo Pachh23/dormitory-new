@@ -8,6 +8,7 @@ const Student = Loadable(lazy(() => import("../pages/student")));
 const Personal = Loadable(lazy(() => import("../pages/personal")));
 const StudentCreate = Loadable(lazy(() => import("../pages/student/create")));
 const StudentEdit = Loadable(lazy(() => import("../pages/student/edit")));
+const PersonalCreate = Loadable(lazy(() => import("../pages/personal/create")));
 const AdminRoutes = (isLoggedIn : boolean): RouteObject => {
   return {
     path: "/",
@@ -40,6 +41,10 @@ const AdminRoutes = (isLoggedIn : boolean): RouteObject => {
           {
             path: "/personal",
             element: <Personal />,
+          },
+          {
+            path: "/personal/create",
+            element: <PersonalCreate />,
           },
         ],
       },

@@ -10,7 +10,7 @@ import StudentCreate from"../../pages/student/create";
 import StudentEdit from"../../pages/student/edit";
 import Personal from "../../pages/personal";
 //import PersonalChange from "../../pages/personal/change";
-//import PersonalCreate from "../../pages/personal/create";
+import PersonalCreate from "../../pages/personal/create";
 const { Header, Content, Footer, Sider } = Layout;
 
 const FullLayout: React.FC = () => {
@@ -122,6 +122,7 @@ const FullLayout: React.FC = () => {
               <Route path="/" element={<Homepages />} />
               <Route path="/student" element={<Student />} />
               <Route path="/personal" element={<Personal />} />
+              <Route path="/personal/create" element={<PersonalCreate />} />
               <Route path="/student/create" element={<StudentCreate />} />
               <Route path="/student/edit/:id" element={<StudentEdit />} />
             </Routes>

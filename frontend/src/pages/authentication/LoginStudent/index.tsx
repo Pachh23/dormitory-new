@@ -45,7 +45,7 @@ function SignInStudentPages() {
                   rules={[{ required: true, message: "Please input your StudentID!" }]}
                   style={{ marginBottom: '20px' }} // Adjust margin here
                 >
-                  <Input prefix={<UserOutlined />} placeholder="StudentID" />
+                  <Input prefix={<UserOutlined />} placeholder="Studentid" />
                 </Form.Item>
                 <Form.Item
                   //label="Password"

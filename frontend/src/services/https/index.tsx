@@ -1,5 +1,6 @@
 import { StudentInterface } from "../../interfaces/Student";
 import { SignInInterface } from "../../interfaces/SignIn";
+import { PersonalInterface } from "../../interfaces/Personal";
 import axios from "axios";
 const apiUrl = "http://localhost:8000";
 const Authorization = localStorage.getItem("token");
@@ -46,6 +47,26 @@ async function CreateStudent(data: StudentInterface) {
     .then((res) => res)
     .catch((e) => e.response);
 }
+
+async function ListPersonal() {
+  return await axios
+    .get(`${apiUrl}/list-personal`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+async function CreatePersonal(data: PersonalInterface) {
+  return await axios
+    .post(`${apiUrl}/create-personal`, data, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
+async function UpdatePersonalById(id: string, data: PersonalInterface) {
+  return await axios
+    .put(`${apiUrl}/update-personal/${id}`, data, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
 export {
   SignInStudent,
   ListStudents,
@@ -53,4 +74,7 @@ export {
   UpdateStudentsById,
   DeleteStudentsById,
   CreateStudent,
+  CreatePersonal,
+  ListPersonal,
+  UpdatePersonalById
 };
