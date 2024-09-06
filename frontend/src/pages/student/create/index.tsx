@@ -46,7 +46,7 @@ function StudentCreate() {
     <div>
       {contextHolder}
       <Card>
-        <h2>เพิ่มข้อมูล ผู้ดูแลระบบ</h2>
+        <h2>เพิ่มข้อมูล นักศึกษา</h2>
         <Divider />
         <Form
           name="basic"

@@ -9,6 +9,13 @@ body {
   /* overflow: scroll; */
   background-color: #192545;
 }
+.login-admin {
+  margin: 0;
+  height: 100vh;
+  width: 100%;
+  /* overflow: scroll; */
+  background-color: #391085;
+}
 .header {
   text-align: center;
 }
@@ -30,6 +37,6 @@ body {
 }
 .admin-form-button {
   width: 100%;
-  background-color: #4779dd; /* สีพื้นหลังของปุ่ม (เปลี่ยนตามที่ต้องการ) */
+  background-color: #531dab; /* สีพื้นหลังของปุ่ม (เปลี่ยนตามที่ต้องการ) */
 }
 

@@ -1,15 +1,12 @@
+// Layout ของหอพักนักศึกษา
 import React, { useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import "../../App.css";
-import { UserOutlined, HomeOutlined, UserAddOutlined} from "@ant-design/icons";
+import { UserOutlined, HomeOutlined } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, theme, Button, message } from "antd";
 import logo from "../../assets/logo.png";
 import Homepages from "../../pages/homepage";
-import Student from"../../pages/student";
-import StudentCreate from"../../pages/student/create";
-import StudentEdit from"../../pages/student/edit";
 import Personal from "../../pages/personal";
-//import PersonalChange from "../../pages/personal/change";
 import PersonalCreate from "../../pages/personal/create";
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -26,7 +23,7 @@ const FullLayout: React.FC = () => {
   };
   const Logout = () => {
     localStorage.clear();
-    messageApi.success("Logout successful");
+    messageApi.success("ออกจากระบบสำเร็จ");
     setTimeout(() => {
       location.href = "/";
     }, 2000);
@@ -91,15 +88,6 @@ const FullLayout: React.FC = () => {
                   <span>ข้อมูลส่วนตัว</span>
                 </Link>
               </Menu.Item>
-              <Menu.Item
-                key="student"
-                onClick={() => setCurrentPage("student")}
-              >
-                <Link to="/student">
-                  <UserAddOutlined />
-                  <span>ข้อมูลนักศึกษา</span>
-                </Link>
-              </Menu.Item>
             </Menu>
           </div>
           <Button onClick={Logout} style={{ margin: 4 }}>
@@ -120,11 +108,8 @@ const FullLayout: React.FC = () => {
           >
             <Routes>
               <Route path="/" element={<Homepages />} />
-              <Route path="/student" element={<Student />} />
               <Route path="/personal" element={<Personal />} />
               <Route path="/personal/create" element={<PersonalCreate />} />
-              <Route path="/student/create" element={<StudentCreate />} />
-              <Route path="/student/edit/:id" element={<StudentEdit />} />
             </Routes>
           </div>
         </Content>

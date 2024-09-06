@@ -12,7 +12,7 @@ function SignInStudentPages() {
   const onFinish = async (values: SignInInterface) => {
     let res = await SignInStudent(values);
     if (res.status === 200) {
-      messageApi.success("Sign-in successful");
+      messageApi.success("เข้าสู่ระบบสำเร็จ");
       localStorage.setItem("isLoginStudent", "true");
       localStorage.setItem("page", "homepage");
       localStorage.setItem("token_type", res.data.token_type);
