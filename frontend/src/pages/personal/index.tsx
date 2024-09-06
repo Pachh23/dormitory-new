@@ -1,9 +1,9 @@
-import { EditOutlined,DeleteOutlined } from "@ant-design/icons";
+import { EditOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { useState, useEffect } from "react";
 import { ListStudents,ListPersonal,ListAddress } from "../../services/https/index";
-import { StudentInterface } from "../../interfaces/Student";
+import { SignInInterface } from "../../interfaces/SignIn";
 import { PersonalInterface } from "../../interfaces/Personal";
 import { AddressInterface } from "../../interfaces/Address";
 import { FamilyInterface } from "../../interfaces/Family";
@@ -11,7 +11,7 @@ import { OtherInformationInteface } from "../../interfaces/Other";
 import { Space, Table, Button, Col, Row, Divider, message, Card } from "antd";
 import dayjs from "dayjs";
 
-interface CombinedData extends PersonalInterface, StudentInterface, AddressInterface, FamilyInterface ,OtherInformationInteface{} // Combining both interfaces
+interface CombinedData extends PersonalInterface, SignInInterface, AddressInterface, FamilyInterface ,OtherInformationInteface{} // Combining both interfaces
 
 function Personal() {
   const navigate = useNavigate();
@@ -78,7 +78,7 @@ function Personal() {
                   <tr>
                     <td style={{ backgroundColor: "#f0f0f0" }}>ชื่อเล่น</td>
                     <td>{record.Nickname}</td>
-                    <td style={{ backgroundColor: "#f0f0f0" }}>วัน/เดือน/ปีเกิด</td>
+                    <td style={{ backgroundColor: "#f0f0f0" }}>วันเกิด</td>
                     <td>{dayjs(record.birthday).format("dddd DD MMM YYYY")}</td>
                   </tr>
                   <tr>
