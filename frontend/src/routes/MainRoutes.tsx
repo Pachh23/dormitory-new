@@ -3,6 +3,8 @@ import { RouteObject } from "react-router-dom";
 import MinimalLayout from "../layout/MinimalLayout";
 import Loadable from "../components/third-patry/Loadable";
 const MainPages = Loadable(lazy(() => import("../pages/authentication/LoginStudent")));
+const LoginAdmin = Loadable(lazy(() => import("../pages/authentication/LoginAdmin")));
+
 //const Registerages = Loadable(lazy(() => import("../pages/authentication/Register")));
 const MainRoutes = (): RouteObject => {
   return {
@@ -15,7 +17,7 @@ const MainRoutes = (): RouteObject => {
       },
       {
         path: "/signin-admin",
-        element: <MainPages />,
+        element: <LoginAdmin />,
       },
       {
         path: "*",

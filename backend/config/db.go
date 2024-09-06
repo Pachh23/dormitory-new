@@ -26,6 +26,7 @@ func ConnectionDB() {
 func SetupDatabase() {
 	db.AutoMigrate(
 		&entity.Students{},
+		&entity.Admins{},
 		&entity.Genders{},
 		&entity.FamilyStatuses{},
 		&entity.Guardians{},
@@ -34,7 +35,6 @@ func SetupDatabase() {
 		&entity.Family{},
 		&entity.OtherInformation{},
 		&entity.PersonalInformation{},
-		//&entity.Admin{}, // เพิ่มโมเดล admin
 	)
 	GenderMale := entity.Genders{Gender: "Male"}
 	GenderFemale := entity.Genders{Gender: "Female"}
@@ -76,21 +76,20 @@ func SetupDatabase() {
 	db.FirstOrCreate(User, &entity.Students{
 		StudentID: "B6524449",
 	})
-	/*
-		// Seed ข้อมูล admin
-		adminhashedPassword, _ := HashPassword("Ad01")
-		AdminUser := &entity.Admin{
-			Username:  "jetnipat",
-			FirstName: "Jetnipat ",
-			LastName:  "kunjai",
-			Phone:     "061xxxxxxx",
-			Birthday:  Birthday,
-			Password:  adminhashedPassword,
-		}
 
-		db.FirstOrCreate(AdminUser, &entity.Admin{
-			Username: "jetnipat",
-		})
-	*/
+	// Seed ข้อมูล admin
+	adminhashedPassword, _ := HashPassword("Ad01")
+	AdminUser := &entity.Admins{
+		Username:  "jetnipat",
+		FirstName: "Jetnipat ",
+		LastName:  "kunjai",
+		Phone:     "061xxxxxxx",
+		Birthday:  Birthday,
+		Password:  adminhashedPassword,
+	}
+
+	db.FirstOrCreate(AdminUser, &entity.Admins{
+		Username: "jetnipat",
+	})
 
 }

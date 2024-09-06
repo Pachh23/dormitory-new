@@ -1,5 +1,6 @@
 import { StudentInterface } from "../../interfaces/Student";
 import { SignInInterface } from "../../interfaces/SignIn";
+import { SignInAdminInterface } from "../../interfaces/SignInAdmin";
 import { PersonalInterface } from "../../interfaces/Personal";
 import { PersonalDetailInterface } from "../../interfaces/PersonalDetails";
 import axios from "axios";
@@ -15,6 +16,12 @@ const requestOptions = {
 async function SignInStudent(data: SignInInterface) {
   return await axios
     .post(`${apiUrl}/signin`, data, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+async function SignInAdmin(data: SignInAdminInterface) {
+  return await axios
+    .post(`${apiUrl}/signin-admin`, data, requestOptions)
     .then((res) => res)
     .catch((e) => e.response);
 }
@@ -93,6 +100,7 @@ async function ListAddress() {
 
 export {
   SignInStudent,
+  SignInAdmin,
   ListStudents,
   GetStudentsById,
   UpdateStudentsById,

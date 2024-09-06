@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"example.com/dormitory/config"
+	"example.com/dormitory/controller/admin"
 	familystatuses "example.com/dormitory/controller/familyStatuses"
 	"example.com/dormitory/controller/genders"
 	"example.com/dormitory/controller/guardians"
@@ -26,6 +27,7 @@ func main() {
 	r.Use(CORSMiddleware())
 	// Auth Route
 	r.POST("/signin", student.SignIn)
+	r.POST("/signin-admin", admin.SignInAdmin)
 	router := r.Group("/")
 	{
 		router.Use(middlewares.Authorizes())

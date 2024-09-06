@@ -14,7 +14,6 @@ function SignInStudentPages() {
     if (res.status === 200) {
       messageApi.success("Sign-in successful");
       localStorage.setItem("isLoginStudent", "true");
-      localStorage.setItem("role", "student");
       localStorage.setItem("page", "homepage");
       localStorage.setItem("token_type", res.data.token_type);
       localStorage.setItem("token", res.data.token);
