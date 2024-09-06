@@ -20,23 +20,6 @@ const StudentRoutes = (isLoggedInStudent : boolean): RouteObject => {
         element: <Homepages />,
       },
       {
-        path: "/student",
-        children: [
-          {
-            path: "/student",
-            element: <Student />,
-          },
-          {
-            path: "/student/create",
-            element: <StudentCreate />,
-          },
-          {
-            path: "/student/edit/:id",
-            element: <StudentEdit />,
-          },
-        ],
-      },
-      {
         path: "/personal",
         children: [
           {

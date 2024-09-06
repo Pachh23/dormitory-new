@@ -8,5 +8,5 @@ export interface PersonalInterface{
   Religion?: string;
   BloodGroup?: string;
   UD?: string;
-  StudentID?: string; // เชื่อมโยงกับ Student
+  student_id?: string; // เชื่อมโยงกับ Student
 }

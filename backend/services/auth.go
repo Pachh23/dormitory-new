@@ -6,7 +6,7 @@ import (
 
 	jwt "github.com/dgrijalva/jwt-go"
 )
-
+//service ที่ใช้สำหรับ Generate Token และ Validate Token
 // JwtWrapper wraps the signing key and the issuer
 type JwtWrapper struct {
 	SecretKey       string

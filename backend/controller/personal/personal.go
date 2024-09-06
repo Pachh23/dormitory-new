@@ -39,23 +39,7 @@ func CreatePersonal(c *gin.Context) {
 	}
 	// ตั้งค่า student_id ให้กับ Personal
 	personal.StudentID = student.ID
-	// เข้ารหัสลับรหัสผ่านที่ผู้ใช้กรอกก่อนบันทึกลงฐานข้อมูล
-	//hashedPassword, _ := config.HashPassword(student.Password)
-	/*
-		// สร้าง students
-		personals := entity.PersonalInformation{
-			Nickname:    personal.Nickname,
-			CitizenID:   personal.CitizenID,
-			Phone:       personal.Phone,
-			Nationality: personal.Nationality,
-			Race:        personal.Race,
-			Religion:    personal.Religion,
-			BloodGroup:  personal.BloodGroup,
-			UD:          personal.UD,
-			StudentID:   personal.StudentID,
-		}
-	*/
-	// บันทึก
+	
 	if err := db.Create(&personal).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

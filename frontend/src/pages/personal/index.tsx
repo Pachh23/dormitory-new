@@ -1,61 +1,52 @@
 import { EditOutlined } from "@ant-design/icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate,useParams } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { useState, useEffect } from "react";
-import { ListStudents,ListPersonal,ListAddress } from "../../services/https/index";
-import { SignInInterface } from "../../interfaces/SignIn";
+import { GetPersonalById } from "../../services/https/index";
+//import { SignInInterface } from "../../interfaces/SignIn";
 import { PersonalInterface } from "../../interfaces/Personal";
-import { AddressInterface } from "../../interfaces/Address";
-import { FamilyInterface } from "../../interfaces/Family";
-import { OtherInformationInteface } from "../../interfaces/Other";
+//import { AddressInterface } from "../../interfaces/Address";
+//import { FamilyInterface } from "../../interfaces/Family";
+//import { OtherInformationInteface } from "../../interfaces/Other";
 import { Space, Table, Button, Col, Row, Divider, message, Card } from "antd";
 import dayjs from "dayjs";
 
-interface CombinedData extends PersonalInterface, SignInInterface, AddressInterface, FamilyInterface ,OtherInformationInteface{} // Combining both interfaces
+//interface CombinedData extends PersonalInterface, SignInInterface, AddressInterface, FamilyInterface ,OtherInformationInteface{} // Combining both interfaces
 
 function Personal() {
   const navigate = useNavigate();
-  const [data, setData] = useState<CombinedData[]>([]);
+  //const [data, setData] = useState<CombinedData[]>([]);
+  const [personal, setPersonal] = useState<PersonalInterface | null>(null); // เปลี่ยนเป็น null สำหรับนักเรียนคนเดียว
+  //const { id } = useParams<{ id: any }>(); // ตรวจสอบว่า id เป็นประเภท string
   const [messageApi, contextHolder] = message.useMessage();
 
-  const getData = async () => {
-    try {
-      const [personalRes,studentsRes,addressRes] = await Promise.all([
-        ListStudents(),
-        ListPersonal(),
-        ListAddress(),
-      ]);
-
-      if (studentsRes.status === 200 && personalRes.status === 200) {
-        // Combine data from both responses
-        const combinedData = personalRes.data.map((personal: PersonalInterface, index: number) => ({
-          ...personal,
-          ...(studentsRes.data[index] || {}), // ใช้ข้อมูลจาก studentRes ถ้ามี
-          ...(addressRes.data[index] || {}),   // ใช้ข้อมูลจาก addressRes ถ้ามี
-        }));
-        
-
-        setData(combinedData);
-
-      } else {
-        messageApi.open({
-          type: "error",
-          content: "Error fetching data",
-        });
-      }
-    } catch (error) {
+  const getPersonalById = async (id: string) => {
+    console.log("Fetching student with id:", id); // ตรวจสอบค่าของ id
+    let res = await GetPersonalById(id);
+    if (res.status == 200) {
+      setPersonal(res.data);
+    } else {
+      setPersonal(null);
       messageApi.open({
         type: "error",
-        content: "Failed to fetch data",
+        content: res.data.error,
       });
     }
   };
-
   useEffect(() => {
-    getData();
+    // ดึง ID ของนักเรียนที่ล็อกอินอยู่จาก localStorage
+    const studentId = localStorage.getItem('id'); // ใช้ localStorage เพื่อดึง ID ของนักเรียน
+    if (studentId) {
+      getPersonalById(studentId);
+    } else {
+      messageApi.open({
+        type: "error",
+        content: "Student ID not found.",
+      });
+    }
   }, []);
 
-  const columns: ColumnsType<CombinedData> = [
+  const columns: ColumnsType<PersonalInterface> = [
     /*
     {
       title: "ลำดับ",
@@ -79,7 +70,7 @@ function Personal() {
                     <td style={{ backgroundColor: "#f0f0f0" }}>ชื่อเล่น</td>
                     <td>{record.Nickname}</td>
                     <td style={{ backgroundColor: "#f0f0f0" }}>วันเกิด</td>
-                    <td>{dayjs(record.birthday).format("dddd DD MMM YYYY")}</td>
+                    <td>{dayjs(record.Birthday).format("dddd DD MMM YYYY")}</td>
                   </tr>
                   <tr>
                     <td>รหัสบัตรประชาชน</td>
@@ -269,7 +260,7 @@ function Personal() {
         <Table
           rowKey="ID"
           columns={columns}
-          dataSource={data}
+        dataSource={personal ? [personal] : []} //
           style={{ width: "100%", overflow: "scroll" }}
           pagination={false}
         />
