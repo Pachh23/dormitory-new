@@ -7,8 +7,8 @@ export interface OtherInformationInteface{
   Color?: string;
   PlateNo?: string;
   TaxDate?: string;
-  Province?: string;
-  DriverLicense?: string;
+  ProvinceVehicle?: string;
+  LicenseID?: number;
   Type?: string;
   ExpiredCard?: string;
   StudentID?: string; // เชื่อมโยงกับ Student

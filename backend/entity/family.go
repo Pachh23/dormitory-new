@@ -4,25 +4,25 @@ import "gorm.io/gorm"
 
 type Family struct {
 	gorm.Model
-	FathersName        string  `json:"fathers_name"`
-	MathersName        string  `json:"mathers_name"`
-	OccupationFather   string  `json:"occupation_father"`
-	OccupationMather   string  `json:"occupation_mather"`
-	PhoneFather        string  `json:"phone_father"`
-	PhoneMather        string  `json:"phone_mather"`
-	OrGuardiansName    *string `json:"or_guardians_name"`
-	Relationship       *string `json:"relationship"`
-	OccupationGuardian *string `json:"occupation_guardian"`
-	PhoneGuardian      *string `json:"phone_guardian"`
+	FathersName        string
+	MathersName        string
+	OccupationFather   string
+	OccupationMather   string
+	PhoneFather        string
+	PhoneMather        string
+	OrGuardiansName    *string
+	Relationship       *string
+	OccupationGuardian *string
+	PhoneGuardian      *string
 
-	GuardiansID uint       `json:"guardian_id"`
+	GuardiansID uint
 	Guardian    *Guardians `gorm:"foreignKey: GuardiansID" json:"guardian"`
 
-	FamilyStatusID uint            `json:"family_status_id"`
+	FamilyStatusID uint
 	FamilyStatus   *FamilyStatuses `gorm:"foreignKey: FamilyStatusID" json:"family_status"`
 
 	// One-to-one relationship with Student
 	//StudentID string
-	StudentID uint      `json:"student_id"`
+	StudentID uint
 	Student   *Students `gorm:"foreignKey:StudentID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"student"`
 }

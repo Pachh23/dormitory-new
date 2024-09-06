@@ -1,13 +1,17 @@
-import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import { EditOutlined,DeleteOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { useState, useEffect } from "react";
-import { ListStudents, ListPersonal } from "../../services/https/index";
-import { PersonalInterface } from "../../interfaces/Personal";
+import { ListStudents,ListPersonal,ListAddress } from "../../services/https/index";
 import { StudentInterface } from "../../interfaces/Student";
+import { PersonalInterface } from "../../interfaces/Personal";
+import { AddressInterface } from "../../interfaces/Address";
+import { FamilyInterface } from "../../interfaces/Family";
+import { OtherInformationInteface } from "../../interfaces/Other";
 import { Space, Table, Button, Col, Row, Divider, message, Card } from "antd";
+import dayjs from "dayjs";
 
-interface CombinedData extends PersonalInterface, StudentInterface {} // Combining both interfaces
+interface CombinedData extends PersonalInterface, StudentInterface, AddressInterface, FamilyInterface ,OtherInformationInteface{} // Combining both interfaces
 
 function Personal() {
   const navigate = useNavigate();
@@ -16,19 +20,23 @@ function Personal() {
 
   const getData = async () => {
     try {
-      const [personalRes, studentRes] = await Promise.all([
-        ListPersonal(),
+      const [personalRes,studentsRes,addressRes] = await Promise.all([
         ListStudents(),
+        ListPersonal(),
+        ListAddress(),
       ]);
 
-      if (personalRes.status === 200 && studentRes.status === 200) {
+      if (studentsRes.status === 200 && personalRes.status === 200) {
         // Combine data from both responses
         const combinedData = personalRes.data.map((personal: PersonalInterface, index: number) => ({
           ...personal,
-          ...studentRes.data[index], // Assuming both lists are in the same order
+          ...(studentsRes.data[index] || {}), // ใช้ข้อมูลจาก studentRes ถ้ามี
+          ...(addressRes.data[index] || {}),   // ใช้ข้อมูลจาก addressRes ถ้ามี
         }));
+        
 
         setData(combinedData);
+
       } else {
         messageApi.open({
           type: "error",
@@ -48,14 +56,15 @@ function Personal() {
   }, []);
 
   const columns: ColumnsType<CombinedData> = [
+    /*
     {
       title: "ลำดับ",
       dataIndex: "ID",
       key: "id",
-    },
+    },*/
     {
-      title: "ข้อมูลนักศึกษา",
-      key: "student_info",
+      //title: "ข้อมูลนักศึกษา",
+      //key: "student_info",
       render: (record) => (
         <>
           <div className="card" style={{ marginTop: 10, padding: 0 }}>
@@ -68,31 +77,147 @@ function Personal() {
                 <tbody>
                   <tr>
                     <td style={{ backgroundColor: "#f0f0f0" }}>ชื่อเล่น</td>
-                    <td>{record.nickname}</td>
+                    <td>{record.Nickname}</td>
                     <td style={{ backgroundColor: "#f0f0f0" }}>วัน/เดือน/ปีเกิด</td>
-                    <td>{record.birthday}</td>
+                    <td>{dayjs(record.birthday).format("dddd DD MMM YYYY")}</td>
                   </tr>
                   <tr>
-                    <td>รหัสประประชาชน</td>
-                    <td>{record.citizen_id}</td>
+                    <td>รหัสบัตรประชาชน</td>
+                    <td>{record.CitizenID}</td>
                     <td>หมายเลขโทรศัพท์มือถือ</td>
-                    <td>{record.phone}</td>
+                    <td>{record.Phone}</td>
                   </tr>
                   <tr>
                     <td style={{ backgroundColor: "#f0f0f0" }}>สัญชาติ</td>
-                    <td>{record.nationality}</td>
+                    <td>{record.Nationality}</td>
                     <td style={{ backgroundColor: "#f0f0f0" }}>เชื้อชาติ</td>
-                    <td>{record.race}</td>
+                    <td>{record.Race}</td>
                   </tr>
                   <tr>
                     <td>ศาสนา</td>
-                    <td>{record.religion}</td>
+                    <td>{record.Religion}</td>
                     <td>กรุ๊ปเลือด</td>
-                    <td>{record.blood_group}</td>
+                    <td>{record.BloodGroup}</td>
                   </tr>
                   <tr>
                     <td style={{ backgroundColor: "#f0f0f0" }}>โรคประจำตัว (ถ้ามี)</td>
-                    <td colSpan={3}>{record.student_id}</td>
+                    <td colSpan={3}>{record.UD}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </Card>
+            <Card style={{ marginTop: 10 }} type="inner" title={<span style={{ color: '#061178' }}>2. ที่อยู่ปัจจุบัน(ตามทะเบียนบ้าน)</span>} >
+            <table className="info-table ">
+                <tbody>
+                  <tr>
+                  <td style={{ backgroundColor: '#f0f0f0' }}>บ้านเลขที่</td>
+                    <td>{record.HouseNo}</td>
+                    <td style={{ backgroundColor: '#f0f0f0' }}>หมู่ที่</td>
+                    <td>{record.VillageNo}</td>
+                  </tr>
+                  <tr>
+                    <td>ชื่อหมู่บ้าน</td>
+                    <td>{record.Village}</td>
+                    <td>ซอย</td>
+                    <td>{record.Alley}</td>
+                  </tr>
+                  <tr>
+                    <td style={{ backgroundColor: '#f0f0f0' }}>ถนน</td>
+                    <td>{record.Road}</td>
+                    <td style={{ backgroundColor: '#f0f0f0' }}>ตำบล/แขวง</td>
+                    <td>{record.SubDistrict}</td>
+                  </tr>
+                  <tr>
+                    <td>อำเภอ/เขต</td>
+                    <td>{record.District}</td>
+                    <td>จังหวัด</td>
+                    <td>{record.Province}</td>
+                  </tr>
+                  <tr>
+                    <td style={{ backgroundColor: '#f0f0f0' }}>รหัสไปรษณีย์</td>
+                    <td colSpan={3}>{record.PostCode}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </Card>
+            <Card style={{ marginTop: 10 }} type="inner" title={<span style={{ color: '#061178' }}>3. เกี่ยวกับครอบครัว</span>} >
+              <table className="info-table ">
+                <tbody>
+                  <tr>
+                  <td style={{ backgroundColor: '#f0f0f0' }}>ชื่อ - สกุลบิดา</td>
+                    <td>{record.FathersName}</td>
+                    <td style={{ backgroundColor: '#f0f0f0' }}>ชื่อ - สกุลมารดา</td>
+                    <td>{record.MathersName}</td>
+                  </tr>
+                  <tr>
+                    <td>อาชีพบิดา</td>
+                    <td>{record.OccupationFather}</td>
+                    <td>อาชีพมารดา</td>
+                    <td>{record.OccupationMather}</td>
+                  </tr>
+                  <tr>
+                    <td style={{ backgroundColor: '#f0f0f0' }}>หมายเลขโทรศัพท์มือถือบิดา</td>
+                    <td>{record.PhoneFather}</td>
+                    <td style={{ backgroundColor: '#f0f0f0' }}>หมายเลขโทรศัพท์มือถือมารดา</td>
+                    <td>{record.PhoneMather}</td>
+                  </tr>
+                  <tr>
+                    <td>สถานภาพครอบครัว</td>
+                    <td>{record.FamilyStatusID}</td>
+                    <td>ผู้ปกครอง</td>
+                    <td>{record.GuardiansID}</td>
+                  </tr>
+                  <tr>
+                    <td style={{ backgroundColor: '#f0f0f0' }}>หรือผู้ปกครอง ชื่อ/สกุล</td>
+                    <td>{record.OrGuardiansName}</td>
+                    <td style={{ backgroundColor: '#f0f0f0' }}>เกี่ยวข้องเป็น</td>
+                    <td>{record.Relationship}</td>
+                  </tr>
+                  <tr>
+                    <td>อาชีพ</td>
+                    <td>{record.OccupationGuardian}</td>
+                    <td>หมายเลขโทรศัพท์มือถือ</td>
+                    <td>{record.PhoneGuardian}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </Card>
+            <Card style={{ marginTop: 10 }} type="inner" title={<span style={{ color: '#061178' }}>4. ข้อมูลอื่นๆ</span>} >
+              <table className="info-table ">
+                <tbody>
+                  <tr>
+                    <td style={{ backgroundColor: '#f0f0f0' }}>สำเร็จการศึกษาขั้นสุดท้ายจาก</td>
+                    <td colSpan={3}>{record.LatestGraduationFrom}</td>
+                  </tr>
+                  <tr>
+                    <td>เมื่อปี พ.ศ.</td>
+                    <td>{record.GraduatedYear}</td>
+                    <td>GPAX</td>
+                    <td>{record.Gpax}</td>
+                  </tr>
+                  <tr>
+                    <td style={{ backgroundColor: '#f0f0f0' }}>พาหนะส่วนตัวที่ใช้</td>
+                    <td>{record.PersonalVehicles}</td>
+                    <td style={{ backgroundColor: '#f0f0f0' }}>สี</td>
+                    <td>{record.Color}</td>
+                  </tr>
+                  <tr>
+                    <td>หมายเลขทะเบียน</td>
+                    <td>{record.PlateNo}</td>
+                    <td>วันครบกำหนดเสียภาษี</td>
+                    <td>{record.TaxDate}</td>
+                  </tr>
+                  <tr>
+                    <td style={{ backgroundColor: '#f0f0f0' }}>จังหวัด</td>
+                    <td>{record.ProvinceVehicle}</td>
+                    <td style={{ backgroundColor: '#f0f0f0' }}>ใบขับขี่</td>
+                    <td>{record.LicenseID}</td>
+                  </tr>
+                  <tr>
+                    <td>ประเภท (ถ้ามี)</td>
+                    <td>{record.Type}</td>
+                    <td>วันบัตรหมดอายุ</td>
+                    <td>{record.ExpiredCard}</td>
                   </tr>
                 </tbody>
               </table>
@@ -125,16 +250,17 @@ function Personal() {
       {contextHolder}
       <Row>
         <Col span={12}>
-          <h2>ข้อมูลนักศึกษา</h2>
+          <h2>ข้อมูลส่วนตัว</h2>
         </Col>
         <Col span={12} style={{ textAlign: "end", alignSelf: "center" }}>
           <Space>
             <Link to="/personal/create">
               <Button type="primary" icon={<EditOutlined />}>
-                เปลี่ยนแปลงข้อมูล
+                สร้างข้อมูล
               </Button>
             </Link>
           </Space>
+        
         </Col>
       </Row>
       <Divider />
