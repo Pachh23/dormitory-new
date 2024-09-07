@@ -70,7 +70,7 @@ function Personal() {
                     <td style={{ backgroundColor: "#f0f0f0" }}>ชื่อเล่น</td>
                     <td>{record.Nickname}</td>
                     <td style={{ backgroundColor: "#f0f0f0" }}>วันเกิด</td>
-                    <td>{dayjs(record.Birthday).format("dddd DD MMM YYYY")}</td>
+                    <td>{dayjs(record.Nickname).format("dddd DD MMM YYYY")}</td>
                   </tr>
                   <tr>
                     <td>รหัสบัตรประชาชน</td>
