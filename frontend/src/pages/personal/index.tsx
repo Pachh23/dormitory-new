@@ -2,9 +2,9 @@ import { EditOutlined } from "@ant-design/icons";
 import { Link, useNavigate,useParams } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { useState, useEffect } from "react";
-import { GetPersonalById } from "../../services/https/index";
-//import { SignInInterface } from "../../interfaces/SignIn";
-import { PersonalInterface } from "../../interfaces/Personal";
+import { ListStudents,ListPersonal,ListAddress,GetPersonalById,GetStudentsById } from "../../services/https/index";
+import { SignInInterface } from "../../interfaces/SignIn";
+//import { PersonalInterface } from "../../interfaces/Personal";
 //import { AddressInterface } from "../../interfaces/Address";
 //import { FamilyInterface } from "../../interfaces/Family";
 //import { OtherInformationInteface } from "../../interfaces/Other";
@@ -16,17 +16,17 @@ import dayjs from "dayjs";
 function Personal() {
   const navigate = useNavigate();
   //const [data, setData] = useState<CombinedData[]>([]);
-  const [personal, setPersonal] = useState<PersonalInterface | null>(null); // เปลี่ยนเป็น null สำหรับนักเรียนคนเดียว
+  const [students, setStudents] = useState<SignInInterface | null>(null); // เปลี่ยนเป็น null สำหรับนักเรียนคนเดียว
   //const { id } = useParams<{ id: any }>(); // ตรวจสอบว่า id เป็นประเภท string
   const [messageApi, contextHolder] = message.useMessage();
 
-  const getPersonalById = async (id: string) => {
+  const getStudentById = async (id: string) => {
     console.log("Fetching student with id:", id); // ตรวจสอบค่าของ id
-    let res = await GetPersonalById(id);
+    let res = await GetStudentsById(id);
     if (res.status == 200) {
-      setPersonal(res.data);
+      setStudents(res.data);
     } else {
-      setPersonal(null);
+      setStudents(null);
       messageApi.open({
         type: "error",
         content: res.data.error,
@@ -37,7 +37,7 @@ function Personal() {
     // ดึง ID ของนักเรียนที่ล็อกอินอยู่จาก localStorage
     const studentId = localStorage.getItem('id'); // ใช้ localStorage เพื่อดึง ID ของนักเรียน
     if (studentId) {
-      getPersonalById(studentId);
+      getStudentById(studentId);
     } else {
       messageApi.open({
         type: "error",
@@ -46,7 +46,7 @@ function Personal() {
     }
   }, []);
 
-  const columns: ColumnsType<PersonalInterface> = [
+  const columns: ColumnsType<SignInInterface> = [
     /*
     {
       title: "ลำดับ",
@@ -68,9 +68,9 @@ function Personal() {
                 <tbody>
                   <tr>
                     <td style={{ backgroundColor: "#f0f0f0" }}>ชื่อเล่น</td>
-                    <td>{record.Nickname}</td>
+                    <td>{record.FirstName}</td>
                     <td style={{ backgroundColor: "#f0f0f0" }}>วันเกิด</td>
-                    <td>{dayjs(record.Nickname).format("dddd DD MMM YYYY")}</td>
+                    <td>{dayjs(record.birthday).format("dddd DD MMM YYYY")}</td>
                   </tr>
                   <tr>
                     <td>รหัสบัตรประชาชน</td>
@@ -260,7 +260,7 @@ function Personal() {
         <Table
           rowKey="ID"
           columns={columns}
-        dataSource={personal ? [personal] : []} //
+        dataSource={students ? [students] : []} //
           style={{ width: "100%", overflow: "scroll" }}
           pagination={false}
         />
